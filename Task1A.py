@@ -16,6 +16,7 @@ def run():
 
     # Print number of stations
     print("Number of stations: {}".format(len(stations)))
+    
 
     # Display data from 3 stations:
     for station in stations:
