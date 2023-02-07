@@ -69,12 +69,38 @@ def stations_within_radius(stations, centre, r):
 
 
 #1d
-
 def rivers_with_station(stations):
-        pass
+    stations_freq = {}
+    for station in stations:
+        rivers = [station.river]
+        
+        for river in rivers:
+            if river in stations_freq:
+                stations_freq[river] += 1
+            else:
+                stations_freq[river] = 1
+    
+    rivers_1station = []
+    
+    for item,value in stations_freq.items():
+        if value >= 1:
+            rivers_1station.append(item)
+    
+    rivers_1station.sort()
+    return rivers_1station
+
 
 def stations_by_river(stations):
-        pass
+    river_stations = {}
+    for item in stations:
+        if item.river in river_stations:
+            river_stations[item.river].append(item.name)
+        else:
+            river_stations[item.river] = [item.name]
+
+            
+    return river_stations
+
 
 
 #1e
