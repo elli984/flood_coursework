@@ -9,11 +9,35 @@ geographical data.
 from floodsystem.utils import sorted_by_key  # noqa
 import math
 import operator
+from haversine import haversine, Unit
 
 
 #1b
 def stations_by_distance(stations, p):
-        pass
+
+        xf = []
+        for station in stations:
+                #Build a list of stations with its name, town name and distance from Cambridge city centre
+                coordinate = station.coord
+                x = (station.name, station.town, haversine(coordinate,p))
+                xf.append(x)
+
+        def distance_sort(A):
+
+                # Perform sorting    
+                N = len(A)
+                while N > 0:
+                        for i in range(N - 1):
+                        # Swap data if in wrong order
+                                if A[i][2] > A[i + 1][2]:
+                                        A[i + 1], A[i] = A[i], A[i + 1]
+                    
+                        N = N - 1
+        
+                return A
+    
+        distance_sort(xf)
+        return xf
 
 
 
