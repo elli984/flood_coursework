@@ -1,7 +1,15 @@
-#1B
 from floodsystem.stationdata import build_station_list
 from floodsystem.geo import stations_by_distance
+from floodsystem.geo import stations_within_radius
+from floodsystem.geo import rivers_with_station
+from floodsystem.geo import stations_by_river
+from floodsystem.geo import rivers_by_station_number
 
+
+
+
+
+#1B
 # Build list of stations
 stations = build_station_list()
 p = (52.2053, 0.1218) #coordinates of Cambridge city centre
@@ -15,31 +23,35 @@ for item in x:
 
 
 #1C
-from floodsystem.stationdata import build_station_list
-from floodsystem.geo import stations_within_radius
-#import operator
 
-stations = build_station_list() #get list of all stations
+def test_1c():
+
+    stations = build_station_list() #get list of all stations
 
 
-close_stations = stations_within_radius(stations, (52.2053, 0.1218), 10)
+    close_stations = stations_within_radius(stations, (52.2053, 0.1218), 10)
 
-#close_stations.sort(key=operator.attrgetter('name'))
+    #close_stations.sort(key=operator.attrgetter('name'))
 
-station_names = []
-for station in close_stations:
-        station_names.append(station.name)
+    station_names = []
+    for station in close_stations:
+            station_names.append(station.name)
 
-station_names.sort()
+    
 
-print(station_names)
+    station_names.sort()
+
+    assert station_names == ['Bin Brook', 'Cambridge Baits Bite', "Cambridge Byron's Pool",
+    'Cambridge Jesus Lock', 'Comberton', 'Dernford', 'Girton', 'Haslingfield Burnt Mill',
+    'Lode', 'Oakington', 'Stapleford']
+
+
 
 
 
 #1D
 from floodsystem.stationdata import build_station_list
-from floodsystem.geo import rivers_with_station
-from floodsystem.geo import stations_by_river
+
 
 # Build list of stations
 stations = build_station_list()
@@ -61,12 +73,13 @@ assert yRC[0] == 'Cam'
 assert yRT[0] == 'Abingdon Lock'
 
 #1E
+def test_1f():
+    stations = build_station_list()
+    top9 = rivers_by_station_number(stations, 9)
+    assert top9 == [('River Thames', 55), ('River Avon', 32), ('River Great Ouse', 27),
+    ('River Aire', 25), ('River Derwent', 25), ('River Calder', 24), ('River Severn', 22),
+    ('River Stour', 20), ('River Ouse', 18), ('River Colne', 18)] 
 
-from floodsystem.geo import rivers_by_station_number
-from floodsystem.stationdata import build_station_list
-
-stations = build_station_list()
-print(rivers_by_station_number(stations, 9))
 
 
 #1F
