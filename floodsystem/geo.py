@@ -44,26 +44,39 @@ def stations_by_distance(stations, p):
 
 #1c
 def stations_within_radius(stations, centre, r):
+
         return_list = []
+
+
         for station in stations: #checks each station in the list
-                #latitude first
-                y_dist = (station.coord[0]-centre[0]) * 110.574 #need to use sf to convert degrees to km
 
-                #longitude multiplier depends on latitude (earth isn't perfect sphere)
-                x_dist = (station.coord[1]-centre[1]) * 111.320 * math.cos(math.radians(centre[0]))
-                dist = math.sqrt(x_dist**2 + y_dist**2)
-
-
-                #debugging - ignore
-                # if(station.name) == 'Babraham':
-                #         print("bab dist", dist)
-                #         print("bab xdist", x_dist)
-                #         print("bab ydist", y_dist)
-                #         print("bab coords", station.coord)
-        
-                #calculates distance between station and centre using pythagoras
-                if dist < r:
+                dist = haversine(station.coord,centre)
+                if dist<r:
                         return_list.append(station)
+
+
+        #         #latitude first
+        #         y_dist = (station.coord[0]-centre[0]) * 110.574 #need to use sf to convert degrees to km
+
+        #         #longitude multiplier depends on latitude (earth isn't perfect sphere)
+        #         x_dist = (station.coord[1]-centre[1]) * 111.320 * math.cos(math.radians(centre[0]))
+        #         dist = math.sqrt(x_dist**2 + y_dist**2)
+
+
+        #         #debugging - ignore
+        #         # if(station.name) == 'Babraham':
+        #         #         print("bab dist", dist)
+        #         #         print("bab xdist", x_dist)
+        #         #         print("bab ydist", y_dist)
+        #         #         print("bab coords", station.coord)
+        
+        #         #calculates distance between station and centre using pythagoras
+        #         if dist < r:
+        #                 return_list.append(station)
+
+
+
+
         return return_list
 
 
@@ -108,15 +121,16 @@ def rivers_by_station_number(stations, N):
         river_dict = stations_by_river(stations)
         #gets dict of rivers and their stations
 
-        for r,s in river_dict:
-                river_dict[r] = len(s)
+        for r in river_dict:
+                river_dict[r] = len(river_dict[r])
                 #replaces list of stations with number of stations
         
 
-        sorted_rivers = sorted(river_dict.items(), key=lambda x:x[1])
+        sorted_rivers = sorted(river_dict.items(), key=lambda x:x[1], reverse=True)
         #.items turns dict into list of tuples
         #lambda function means list is sorted by second value in tuple ([1])
         #so this line sorts the dict into a list of tuples (rivername, nu_of_stations) by value
+        #reverse=true means the rivers with the most stations are first in the list
 
         trunc_rivers = sorted_rivers[:N]
         #leaves only the N rivers with the most stations
