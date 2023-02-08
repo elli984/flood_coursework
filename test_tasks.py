@@ -11,7 +11,7 @@ x = stations_by_distance(stations,p)
 lst = []
 for item in x:
     lst.append(item[2]) 
-    assert sorted(lst) == lst
+assert sorted(lst) == lst
 
 
 #1C
@@ -46,7 +46,7 @@ stations = build_station_list()
 
 d = rivers_with_station(stations)
 
-assert d[0] == 'Addlestone Bourne'
+assert d == ['Addlestone Bourne', 'Aire Washlands', 'Alconbury Brook', 'Aldingbourne Rife', 'Aller Brook', 'Allison Dyke', 'Alverthorpe Beck', 'Ampney Brook', 'Amwell Loop', 'Arkle Beck']
 
     
 
@@ -85,7 +85,11 @@ for item in a:
         else:
             pass
 
-if 'True' in lst:
-    print('Error')
-else:
-    print('No problem with 1f')
+counter = 0
+for aa in lst:
+    if aa == False:
+        counter += 1
+    else:
+        pass
+assert counter == len(a)
+    
