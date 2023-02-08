@@ -76,9 +76,13 @@ assert yRT[0] == 'Abingdon Lock'
 def test_1f():
     stations = build_station_list()
     top9 = rivers_by_station_number(stations, 9)
+    if len(top9) > 9:
+        for s in range(9, len(top9)):
+            assert top9[s][1] == top9[-1][1]
     assert top9 == [('River Thames', 55), ('River Avon', 32), ('River Great Ouse', 27),
     ('River Aire', 25), ('River Derwent', 25), ('River Calder', 24), ('River Severn', 22),
-    ('River Stour', 20), ('River Ouse', 18), ('River Colne', 18)] 
+    ('River Stour', 20), ('River Ouse', 18), ('River Colne', 18)]
+
 
 
 
