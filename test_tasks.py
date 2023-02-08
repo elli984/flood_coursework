@@ -15,7 +15,24 @@ for item in x:
 
 
 #1C
+from floodsystem.stationdata import build_station_list
+from floodsystem.geo import stations_within_radius
+#import operator
 
+stations = build_station_list() #get list of all stations
+
+
+close_stations = stations_within_radius(stations, (52.2053, 0.1218), 10)
+
+#close_stations.sort(key=operator.attrgetter('name'))
+
+station_names = []
+for station in close_stations:
+        station_names.append(station.name)
+
+station_names.sort()
+
+print(station_names)
 
 
 
@@ -45,7 +62,11 @@ assert yRT[0] == 'Abingdon Lock'
 
 #1E
 
+from floodsystem.geo import rivers_by_station_number
+from floodsystem.stationdata import build_station_list
 
+stations = build_station_list()
+print(rivers_by_station_number(stations, 9))
 
 
 #1F
