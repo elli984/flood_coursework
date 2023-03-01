@@ -5,7 +5,10 @@ from floodsystem.geo import rivers_with_station
 from floodsystem.geo import stations_by_river
 from floodsystem.geo import rivers_by_station_number
 from floodsystem.station import inconsistent_typical_range_stations
-
+from floodsystem.analysis import polyfit
+from floodsystem.datafetcher import fetch_measure_levels
+import datetime
+from numpy import poly1d
 
 
 
@@ -125,3 +128,27 @@ def test_2e():
                     
         N = N - 1
     assert stations[2].latest_level < stations[3].latest_level
+
+#2F
+def test_2f():
+    stations = build_station_list()
+    update_water_levels(stations)
+
+    N = len(stations)
+    while N > 0:
+        for i in range(N - 1):
+            a1 = stations[i].latest_level
+            a2 = stations[i + 1].latest_level
+            if type(a1) == float and type(a2) == float:
+                if a1 > a2:
+                    stations[i + 1], stations[i] = stations[i], stations[i + 1]
+            else:
+                pass
+                    
+        N = N - 1
+    
+    dt = 2
+    dates, levels = fetch_measure_levels(stations[-1].measure_id,dt=datetime.timedelta(days=dt))
+    assert polyfit(dates, levels, 4) == polyfit(dates, levels, 4)
+
+    
