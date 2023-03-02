@@ -22,6 +22,7 @@ def plot_water_level_with_fit(station, dates, levels, p):
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib
+    import matplotlib.dates
 
     x = matplotlib.dates.date2num(dates)
     y = levels
