@@ -25,18 +25,28 @@ from floodsystem.flood import stations_over_threshold
 from floodsystem.flood import town_average_level
 from floodsystem.flood import town_categories
 
+
 stations = build_station_list()
-towns = stations_by_town(stations)
 
 update_water_levels(stations)
+risk_stations = stations_over_threshold(stations, 0.8)
 
-town_levels = town_average_level(towns)
+risk_list = []
+for station, level in risk_stations:
+    risk_list.append(station)
+
+towns = stations_by_town(stations)
+risk_towns = stations_by_town(risk_list)
+
+#this way not all stations are considered when evaluating future flood risk
+#saves processing time
+
+town_levels = town_average_level(risk_towns, 4, 5)
 
 print(town_levels)
 
-low, moderate, high, severe = town_categories(town_levels, 0.8, 1, 1.2, 1.4)
+low, moderate, high, severe = town_categories(towns, town_levels, 0.8, 1, 1.2)
 print("\n\nsevere:", severe)
 print("\n\nhigh", high)
 print("\n\nmoderate", moderate)
-print("\n\nlow", low)
-
+print("\n\nlow", low, "\n\n")

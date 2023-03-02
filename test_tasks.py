@@ -4,11 +4,14 @@ from floodsystem.geo import stations_within_radius
 from floodsystem.geo import rivers_with_station
 from floodsystem.geo import stations_by_river
 from floodsystem.geo import rivers_by_station_number
+from floodsystem.geo import stations_by_town
 from floodsystem.station import inconsistent_typical_range_stations
 from floodsystem.analysis import polyfit
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.flood import stations_over_threshold
 from floodsystem.flood import stations_highest_rel_level
+from floodsystem.flood import town_average_level
+from floodsystem.flood import town_categories
 import datetime
 from numpy import poly1d
 
@@ -185,4 +188,39 @@ def test_2f():
     dates, levels = fetch_measure_levels(stations[-1].measure_id,dt=datetime.timedelta(days=dt))
     assert polyfit(dates, levels, 4) == polyfit(dates, levels, 4)
 
+    
+#2G
+
+def test_2g():
+    stations = build_station_list()
+    update_water_levels(stations)
+    risk_stations = stations_over_threshold(stations, 0.8)
+
+    risk_list = []
+    for station, level in risk_stations:
+        risk_list.append(station)
+
+    towns = stations_by_town(stations)
+    risk_towns = stations_by_town(risk_list)
+
+    #this way not all stations are considered when evaluating future flood risk
+    #saves processing time
+
+    town_levels = town_average_level(risk_towns, 4, 5)
+
+    print(town_levels)
+
+    low, moderate, high, severe = town_categories(towns, town_levels, 0.8, 1, 1.2)
+
+    assert len(low) + len(moderate) + len(high) + len(severe) == len(towns)
+    
+    for town in low:
+        assert town not in risk_towns or town_levels[town][1] <1
+        #town under smallest threshold or has falling water level
+    for town in moderate:
+        assert town_levels[town][0] > 0.8 and town_levels[town][0]<=1
+    for town in high:
+        assert town_levels[town][0] > 1 and town_levels[town][0]<=1.2
+    for town in severe:
+        assert town_levels[town][0] > 1.2
     
