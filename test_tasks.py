@@ -124,9 +124,9 @@ def test_2b():
 
     for station, level in high_stations:
         assert level > 0.8
-    assert high_stations[-1][1] > high_stations[0][1]
+    assert high_stations[0][1] > high_stations[-1][1]
 
-    for i in range(0, len(high_stations)):
+    for i in range(0, len(high_stations)-2):
         assert high_stations[i][1] >= high_stations[i+1][1]
 
 
@@ -141,9 +141,8 @@ def test_2c():
 
 
     assert highest_stations[0].relative_water_level() > highest_stations[-1].relative_water_level()
-    for i in range(0, len(highest_stations)):
-        assert highest_stations[i] >= highest_stations[i+1]
-
+    for i in range(0, len(highest_stations)-2):
+        assert highest_stations[i].relative_water_level() >= highest_stations[i+1].relative_water_level()
 
 #2E
 def test_2e():
