@@ -47,6 +47,13 @@ class MonitoringStation:
         else:
             return False
         
+    def relative_water_level(self):
+        if self.latest_level != None and type(self.typical_range) == tuple:
+            return (self.latest_level - self.typical_range[0])/(self.typical_range[1] - self.typical_range[0])
+        else:
+            #Error: no water level recorded
+            return None
+        
         
 def inconsistent_typical_range_stations(stations):
     list = []

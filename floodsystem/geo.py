@@ -143,3 +143,17 @@ def rivers_by_station_number(stations, N):
 
         return trunc_rivers
 
+
+
+
+#2g
+def stations_by_town(stations):
+        town_dict = {}
+        for station in stations:
+                if station.town not in town_dict:
+                        town_dict[station.town] = [station]
+                else:
+                        town_dict[station.town].append(station)
+
+        return town_dict
+
